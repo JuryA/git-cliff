@@ -119,10 +119,8 @@ impl RemoteEntry for GitLabCommit {
 		ref_name: Option<&str>,
 		page: i32,
 	) -> String {
-		let commit_page = page + 1;
 		let mut url = format!(
-			"{}/projects/{}/repository/commits?per_page={MAX_PAGE_SIZE}&\
-			 page={commit_page}",
+			"{}/projects/{}/repository/commits?per_page={MAX_PAGE_SIZE}&page={page}",
 			api_url, id
 		);
 
@@ -193,6 +191,10 @@ impl RemotePullRequest for GitLabMergeRequest {
 			.clone()
 			.or(self.squash_commit_sha.clone())
 			.or(Some(self.sha.clone()))
+	}
+
+	fn author_username(&self) -> Option<String> {
+		Some(self.author.username.clone())
 	}
 }
 
